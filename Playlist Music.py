@@ -122,77 +122,121 @@ def read_playlists_from_txt():
     # Return the list of Playlist objects
     return playlists
 
+# Initialize Pygame library
 pygame.init()
+
+# Create a screen with size of 800 x 450
 screen = pygame.display.set_mode((800, 450))
-pygame.display.set_caption("Choi Nhac")
+
+# Set the title of the screen to "Playlist Music"
+pygame.display.set_caption("Playlist Music")
+
+# Set the running status of the application to True
 running = True
+
+# Define color constant BLACK with values (0, 0, 0)
 BLACK = (0, 0, 0)
+
+# Create a clock object to control the frame rate
 clock = pygame.time.Clock()
 
+# Initialize a variable 'prompt' with value 0
 prompt = 0
-BackGround = Background(r'image\background.jpg', [0, 0])
-BackGround1 = Background(r'image\dep.jpg', [0, 0])
-BackGround2 = Background(r'image\Anh-anime.jpg', [0, 0])
-BackGround3 = Background(r'image\Anh-Galaxy.jpg', [0, 0])
-BackGround4 = Background(r'image\Nhung-hinh-anh.jpg', [0, 0])
-BackGround5 = Background(r'image\hinh-nen.jpg', [0, 0])
 
+# Create Background objects using the specified image file
+BackGround = Background(r'image\background.jpg', [0, 0])
+BackGround1 = Background(r'image\background1.jpg', [0, 0])
+BackGround2 = Background(r'image\background2.jpg', [0, 0])
+BackGround3 = Background(r'image\background3.jpg', [0, 0])
+BackGround4 = Background(r'image\background4.jpg', [0, 0])
+BackGround5 = Background(r'image\background5.jpg', [0, 0])
+
+# Read playlists from a text file
 playlists = read_playlists_from_txt()
 
+# Create playlist buttons from the playlists
 playlists_btn_list = []
 margins = 70
-
 for i in range(len(playlists)):
-    playlist_btn = TextButton(
-        playlists[i].name.rstrip(), (50, 50 + margins * i))
+    playlist_btn = TextButton(playlists[i].name.rstrip(), (50, 50 + margins * i))
     playlists_btn_list.append(playlist_btn)
 
+# Create an empty list for video buttons
 videos_btn_list = []
+
+# Initialize a variable 'playlist_choice' to None
 playlist_choice = None
 
+# Start the game loop
+running = True
 while running:
+    # Set game frame rate to 60 frames per second
     clock.tick(60)
+
+    # Fill screen with white color
     screen.fill((255, 255, 255))
+
+    # Blit the current background image
     screen.blit(BackGround.image, BackGround.rect)
 
+    # Draw playlist buttons
     for playlist_button in playlists_btn_list:
         playlist_button.draw()
 
+    # Draw video buttons
     for video_button in videos_btn_list:
         video_button.draw()
 
+    # Check for events
     for event in pygame.event.get():
+        # Check for mouse button click
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
+                # Check for playlist button click
                 for i in range(len(playlists_btn_list)):
                     if playlists_btn_list[i].is_mouse_on_text():
                         playlist_choice = i
 
+                        # Create video buttons for selected playlist
                         videos_btn_list = []
                         for j in range(len(playlists[i].videos)):
                             video_btn = TextButton(
                                 str(j+1) + "." + playlists[i].videos[j].title.rstrip(), (350, 50 + margins * j))
                             videos_btn_list.append(video_btn)
 
-                if playlist_choice + 1 == 1:
-                    BackGround = BackGround1
-                elif playlist_choice + 1 == 2:
-                    BackGround = BackGround2
-                elif playlist_choice + 1 == 3:
-                    BackGround = BackGround3
-                elif playlist_choice + 1 == 4:
-                    BackGround = BackGround4
-                    screen.blit(BackGround4.image, BackGround.rect)
-                elif playlist_choice + 1 == 5:
-                    BackGround = BackGround5
-                if playlist_choice != None:
+                # Check playlist button
+                if playlist_choice == None:
+                    continue
+                else:
+                    # Set background based on selected playlist
+                    # Set background 1
+                    if playlist_choice + 1 == 1:
+                        BackGround = BackGround1
+                    # Set background 2
+                    elif playlist_choice + 1 == 2:
+                        BackGround = BackGround2
+                    # Set background 3
+                    elif playlist_choice + 1 == 3:
+                        BackGround = BackGround3
+                    # Set background 4
+                    elif playlist_choice + 1 == 4:
+                        BackGround = BackGround4
+                        screen.blit(BackGround4.image, BackGround.rect)
+                    # Set background 5
+                    elif playlist_choice + 1 == 5:
+                        BackGround = BackGround5
+
+                    # Open video on webisite
                     for i in range(len(videos_btn_list)):
                         if videos_btn_list[i].is_mouse_on_text():
                             playlists[playlist_choice].videos[i].open()
 
+        # Stop the game loop
         if event.type == pygame.QUIT:
             running = False
 
+    # Update the display to show the most recent changes
     pygame.display.flip()
 
+# Close the game window.
 pygame.quit()
