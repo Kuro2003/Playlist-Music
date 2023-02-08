@@ -41,7 +41,7 @@ class TextButton:
     # Method to draw the text button
     def draw(self):
         font = pygame.font.SysFont('sans', 40)
-        text_render = font.render(self.text, True, (0, 0, 0))
+        text_render = font.render(self.text, True, (255, 0, 0))
         self.text_box = text_render.get_rect()
 
         # Change the color of text when the mouse is on it
@@ -50,7 +50,7 @@ class TextButton:
             pygame.draw.line(screen, (0, 0, 255), (self.position[0], self.position[1] + self.text_box[3]), (
                 self.position[0] + self.text_box[2], self.position[1] + self.text_box[3]))
         else:
-            text_render = font.render(self.text, True, (0, 0, 0))
+            text_render = font.render(self.text, True, (255, 0, 0))
         screen.blit(text_render, self.position)
 
 # Background class for creating and positioning a background image
